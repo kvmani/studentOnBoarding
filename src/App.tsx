@@ -29,6 +29,8 @@ const categoryIcons: Record<string, React.ReactNode> = {
   Python: <TerminalSquare size={18} />,
   Data: <FileSearch size={18} />,
   "Machine Learning": <Gauge size={18} />,
+  "Command Line": <TerminalSquare size={18} />,
+  "Remote Access": <Server size={18} />,
   Segmentation: <Layers3 size={18} />,
   Compute: <Server size={18} />
 };

@@ -44,6 +44,7 @@ During `npm run dev`, Vite serves files from `config/`. During `npm run build`, 
 
 ```text
 config/                 runtime YAML config files
+public/tutorial-assets/ local screenshots, examples, and infographics
 src/
   data/                 structured lesson content
   components/           UI and original SVG diagrams
@@ -55,11 +56,16 @@ src/
 
 - Welcome to the lab workflow
 - VS Code basics
+- Terminal basics: PowerShell and Linux
+- MobaXterm SSH/GPU-server workflow
 - Python basics
 - Python virtual environments on Windows
+- Jupyter notebooks in VS Code
 - Microstructure annotation workflow
-- Machine-learning basics
+- Machine-learning and deep-learning basics for segmentation
 - pix2pix and CycleGAN for microscopy
 - Hydride segmentation dataset workflow
 - GPU cluster workflow
 
+Representative screenshots are generated assets stored locally in `public/tutorial-assets/screenshots/`.
+Microscopy examples are copied from the local hydride, powder, and image-to-image workflow repositories so the deployed site remains self-contained.

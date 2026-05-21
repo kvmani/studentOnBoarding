@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 760" role="img" aria-labelledby="title desc">
+  <title id="title">Windows PowerShell and Linux shell command map</title>
+  <desc id="desc">Side-by-side command examples for folders, listing files, activation, permissions, and job logs.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#10231f"/>
+      <stop offset="0.55" stop-color="#164e63"/>
+      <stop offset="1" stop-color="#4a2f07"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="0" x2="1">
+      <stop offset="0" stop-color="#0f766e"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#071312" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+  <rect width="1400" height="760" rx="24" fill="url(#bg)"/>
+  <text x="64" y="86" fill="#f8fafc" font-family="Segoe UI, Arial, sans-serif" font-size="46" font-weight="800">Terminal commands: same job, different shells</text>
+  <text x="66" y="126" fill="#d8efe9" font-family="Segoe UI, Arial, sans-serif" font-size="20">Read the prompt first: current folder, active environment, and operating system decide which command is correct.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="64" y="170" width="610" height="500" rx="14" fill="#f8faf9"/>
+    <rect x="64" y="170" width="610" height="70" rx="14" fill="url(#teal)"/>
+    <text x="96" y="216" fill="#ffffff" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="800">Windows PowerShell</text>
+    <text x="96" y="282" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Project folder</text>
+    <text x="330" y="282" fill="#164e63" font-family="Cascadia Code, Consolas, monospace" font-size="21">cd C:\Users\Student\projects\HydrideSegmentation</text>
+    <text x="96" y="340" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">List files</text>
+    <text x="330" y="340" fill="#164e63" font-family="Cascadia Code, Consolas, monospace" font-size="21">Get-ChildItem</text>
+    <text x="96" y="398" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Activate .venv</text>
+    <text x="330" y="398" fill="#164e63" font-family="Cascadia Code, Consolas, monospace" font-size="21">.\.venv\Scripts\Activate.ps1</text>
+    <text x="96" y="456" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Execution policy</text>
+    <text x="330" y="456" fill="#7f3217" font-family="Cascadia Code, Consolas, monospace" font-size="21">Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</text>
+    <text x="96" y="514" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Run script</text>
+    <text x="330" y="514" fill="#164e63" font-family="Cascadia Code, Consolas, monospace" font-size="21">python scripts\microseg_cli.py dataset-qa</text>
+    <text x="96" y="590" fill="#43544f" font-family="Segoe UI, Arial, sans-serif" font-size="19">Constraint: script activation can be blocked until the approved execution policy is set.</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="726" y="170" width="610" height="500" rx="14" fill="#f8faf9"/>
+    <rect x="726" y="170" width="610" height="70" rx="14" fill="#4f46e5"/>
+    <text x="758" y="216" fill="#ffffff" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="800">Linux bash on server/HPC</text>
+    <text x="758" y="282" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Project folder</text>
+    <text x="984" y="282" fill="#164e63" font-family="Cascadia Code, Consolas, monospace" font-size="21">cd /scratch/student/hydride_runs</text>
+    <text x="758" y="340" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">List files</text>
+    <text x="984" y="340" fill="#164e63" font-family="Cascadia Code, Consolas, monospace" font-size="21">ls -lh</text>
+    <text x="758" y="398" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Activate env</text>
+    <text x="984" y="398" fill="#164e63" font-family="Cascadia Code, Consolas, monospace" font-size="21">source .venv/bin/activate</text>
+    <text x="758" y="456" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Make runnable</text>
+    <text x="984" y="456" fill="#7f3217" font-family="Cascadia Code, Consolas, monospace" font-size="21">chmod +x scripts/run_train.sh</text>
+    <text x="758" y="514" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Watch logs</text>
+    <text x="984" y="514" fill="#164e63" font-family="Cascadia Code, Consolas, monospace" font-size="21">tail -f logs/train_0421.out</text>
+    <text x="758" y="590" fill="#43544f" font-family="Segoe UI, Arial, sans-serif" font-size="19">Constraint: paths, capitalization, permissions, modules, and storage locations matter.</text>
+  </g>
+</svg>
