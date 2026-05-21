@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">VS Code terminals for Windows and Linux</title>
+  <desc id="desc">Generated screenshot-style terminal comparison showing PowerShell and Linux bash commands inside VS Code.</desc>
+  <rect width="1280" height="760" fill="#111827"/>
+  <rect x="70" y="60" width="1140" height="620" rx="24" fill="#1f2937"/>
+  <text x="100" y="112" fill="#ffffff" font-family="Segoe UI, Arial" font-size="30" font-weight="700">VS Code Terminal: Windows and Linux</text>
+  <rect x="110" y="150" width="500" height="440" rx="14" fill="#0b1220" stroke="#60a5fa" stroke-width="3"/>
+  <rect x="670" y="150" width="500" height="440" rx="14" fill="#0b1220" stroke="#34d399" stroke-width="3"/>
+  <text x="140" y="202" fill="#93c5fd" font-family="Segoe UI, Arial" font-size="24" font-weight="700">Windows PowerShell</text>
+  <text x="700" y="202" fill="#86efac" font-family="Segoe UI, Arial" font-size="24" font-weight="700">Linux / HPC Bash</text>
+  <g font-family="Consolas, monospace" font-size="21">
+    <text x="140" y="260" fill="#d3e6dd">PS C:\lab\project&gt; python -m venv .venv</text>
+    <text x="140" y="310" fill="#d3e6dd">PS C:\lab\project&gt; .\.venv\Scripts\Activate.ps1</text>
+    <text x="140" y="360" fill="#83d6b4">(.venv) PS&gt; python -m pip install -r requirements.txt</text>
+    <text x="140" y="410" fill="#d3e6dd">(.venv) PS&gt; python scripts\check_data.py</text>
+    <text x="140" y="500" fill="#fbbf24">Tip: use backslash paths on Windows.</text>
+    <text x="700" y="260" fill="#d3e6dd">$ python3 -m venv .venv</text>
+    <text x="700" y="310" fill="#d3e6dd">$ source .venv/bin/activate</text>
+    <text x="700" y="360" fill="#83d6b4">(.venv) $ python -m pip install -r requirements.txt</text>
+    <text x="700" y="410" fill="#d3e6dd">(.venv) $ bash submit_all.sh</text>
+    <text x="700" y="500" fill="#fbbf24">Tip: use forward slash paths on Linux.</text>
+  </g>
+  <rect x="270" y="626" width="740" height="44" rx="12" fill="#fef3c7"/>
+  <text x="640" y="655" text-anchor="middle" fill="#78350f" font-family="Segoe UI, Arial" font-size="21" font-weight="700">Always check the prompt: folder + active environment + shell type.</text>
+</svg>

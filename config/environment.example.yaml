@@ -1,0 +1,9 @@
+siteTitle: Student Onboarding Hub
+officeName: Materials Imaging and Machine Learning Lab
+pythonVirtualEnvTutorialUrl: http://intranet.example.local/tutorials/python-virtual-environment
+annotationToolUrl: http://intranet.example.local/tools/microstructure-annotation
+hydrideSegmentationRepoUrl: http://intranet.example.local/repos/hydride-segmentation
+cycleGanRepoUrl: http://intranet.example.local/repos/microi2i-cycle-gan
+gpuClusterDocsUrl: http://intranet.example.local/hpc/gpu-cluster-start-here
+helpDeskOrContactUrl: mailto:mentor@example.local
+

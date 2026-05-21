@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">VS Code search and navigation</title>
+  <desc id="desc">Generated screenshot-style guide showing quick open, global search, command palette, and file navigation.</desc>
+  <defs><marker id="arrow" markerWidth="14" markerHeight="14" refX="10" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#35d0ba"/></marker></defs>
+  <rect width="1280" height="760" fill="#0f172a"/>
+  <rect x="70" y="60" width="1140" height="620" rx="24" fill="#1e1e1e"/>
+  <rect x="110" y="100" width="270" height="520" fill="#252526"/>
+  <text x="140" y="145" fill="#cccccc" font-family="Segoe UI, Arial" font-size="20" font-weight="700">SEARCH</text>
+  <rect x="140" y="172" width="205" height="40" rx="6" fill="#3c3c3c"/>
+  <text x="156" y="198" fill="#f5f5f5" font-family="Consolas, monospace" font-size="18">dataset_qa</text>
+  <text x="140" y="252" fill="#89d185" font-family="Consolas, monospace" font-size="17">3 results in 2 files</text>
+  <text x="156" y="298" fill="#9cdcfe" font-family="Consolas, monospace" font-size="17">src/data/lessons.ts</text>
+  <text x="176" y="330" fill="#d4d4d4" font-family="Consolas, monospace" font-size="16">dataset-qa --strict</text>
+  <text x="156" y="382" fill="#9cdcfe" font-family="Consolas, monospace" font-size="17">README.md</text>
+  <text x="176" y="414" fill="#d4d4d4" font-family="Consolas, monospace" font-size="16">Run dataset QA</text>
+  <rect x="430" y="118" width="650" height="64" rx="10" fill="#2d2d30" stroke="#35d0ba" stroke-width="3"/>
+  <text x="460" y="158" fill="#dcdcaa" font-family="Segoe UI, Arial" font-size="22">Ctrl+P: quickly open a file by name</text>
+  <rect x="430" y="238" width="650" height="64" rx="10" fill="#2d2d30" stroke="#35d0ba" stroke-width="3"/>
+  <text x="460" y="278" fill="#dcdcaa" font-family="Segoe UI, Arial" font-size="22">Ctrl+Shift+F: search across the project</text>
+  <rect x="430" y="358" width="650" height="64" rx="10" fill="#2d2d30" stroke="#35d0ba" stroke-width="3"/>
+  <text x="460" y="398" fill="#dcdcaa" font-family="Segoe UI, Arial" font-size="22">Ctrl+Shift+P: command palette</text>
+  <rect x="430" y="505" width="650" height="86" rx="10" fill="#111827"/>
+  <text x="460" y="540" fill="#83d6b4" font-family="Consolas, monospace" font-size="18">Use search before asking: file name, command name, error text</text>
+  <text x="460" y="573" fill="#d3e6dd" font-family="Consolas, monospace" font-size="18">Then share the exact file path and line number.</text>
+  <g stroke="#35d0ba" stroke-width="5" marker-end="url(#arrow)">
+    <line x1="348" y1="190" x2="430" y2="150"/>
+    <line x1="348" y1="270" x2="430" y2="270"/>
+    <line x1="348" y1="390" x2="430" y2="390"/>
+  </g>
+</svg>

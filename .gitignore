@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.vite/
+.idea/
+.vscode/
+*.log
+npm-debug.log*
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+artifacts/screenshots/
+config/environment.real.yaml
+config/environment.real.yml
