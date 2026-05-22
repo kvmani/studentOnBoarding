@@ -360,7 +360,7 @@ function BlockRenderer({ block }: { block: LessonBlock }) {
       return <div className="equation">{block.text}</div>;
     case "image":
       return (
-        <figure className="tutorial-figure">
+        <figure className={`tutorial-figure ${block.size ? `figure-${block.size}` : ""}`}>
           <img src={block.src} alt={block.alt} />
           <figcaption>{block.caption}</figcaption>
         </figure>

@@ -79,7 +79,7 @@ src/
 - Python virtual environments on Windows
 - Jupyter notebooks in VS Code
 - Microstructure annotation workflow
-- Machine-learning and deep-learning basics for segmentation
+- Deep-learning basics for image analysis
 - pix2pix and CycleGAN image translation workflows
 - Hydride segmentation science, training, and inference
 - GPU cluster workflow

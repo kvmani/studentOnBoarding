@@ -695,21 +695,92 @@ export const lessons: Lesson[] = [
   },
   {
     id: "ml-basics",
-    title: "Machine Learning Basics",
-    summary: "Understand training, validation, testing, inference, loss, metrics, and why split discipline matters.",
+    title: "Deep Learning Basics for Image Analysis",
+    summary: "Understand tensors, CNNs, U-Net segmentation, loss, augmentation, overfitting, checkpoints, inference, debugging, and metrics for microscopy workflows.",
     category: "Machine Learning",
-    tags: ["ML", "training", "validation", "metrics"],
+    tags: ["ML", "deep learning", "tensors", "CNN", "U-Net", "augmentation", "overfitting", "checkpoints", "inference", "debugging", "metrics"],
     durationMinutes: 15,
     level: "Beginner",
     prerequisites: ["Python basics", "Microstructure annotation workflow"],
     visual: "ml",
     sections: [
       {
-        heading: "The learning loop",
+        heading: "Images become tensors",
         blocks: [
           {
             type: "paragraph",
-            text: "A model starts with adjustable numbers called parameters. Training repeatedly changes those parameters so predictions become closer to the target masks. In image segmentation, the input is an image and the answer is a mask with one class value per pixel."
+            text: "Deep learning starts by turning images into arrays of numbers called tensors. A grayscale microscope image has one channel. An RGB image has three channels. A training batch stacks several images together so the model can process them in one step."
+          },
+          {
+            type: "image",
+            src: "tutorial-assets/infographics/image-tensor-cnn-workflow.svg",
+            alt: "Infographic showing a microscope image becoming a tensor, passing through convolution filters and feature maps, and producing a mask.",
+            caption: "A microscope image becomes a tensor, convolution filters create feature maps, and the model outputs a pixel-level prediction."
+          },
+          {
+            type: "equation",
+            text: "image batch shape = N x C x H x W"
+          },
+          {
+            type: "bullets",
+            items: [
+              "N is batch size: how many images are processed together.",
+              "C is channels: 1 for grayscale, 3 for RGB, or more for special scientific inputs.",
+              "H and W are image height and width in pixels.",
+              "Normalization rescales pixel values so optimization is easier, often from 0-255 into 0-1 or standardized values.",
+              "A segmentation mask has the same H and W as the image, but each pixel stores a class such as 0 for background and 1 for hydride."
+            ]
+          }
+        ]
+      },
+      {
+        heading: "What CNNs learn",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "A convolutional neural network learns small filters that slide across the image. Early filters often respond to edges, contrast, dots, lines, or texture. Deeper layers combine those simple signals into larger patterns such as hydride plates, grain boundaries, pores, powder particles, or imaging artifacts."
+          },
+          {
+            type: "equation",
+            text: "feature map = filter applied across the image"
+          },
+          {
+            type: "bullets",
+            items: [
+              "Filter: a small learned grid of numbers that detects a local pattern.",
+              "Feature map: the image-like output showing where that pattern appears.",
+              "Receptive field: the region of the original image that affects one feature value.",
+              "Downsampling: reduces resolution so the model sees wider context.",
+              "Upsampling: restores resolution so the model can make one decision per pixel."
+            ]
+          }
+        ]
+      },
+      {
+        heading: "How a U-Net thinks",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "A U-Net is common for microscopy segmentation because it combines context and detail. The encoder compresses the image into feature maps that describe larger patterns. The decoder expands those features back to image size. Skip connections bring fine edge detail from the encoder to the decoder."
+          },
+          {
+            type: "bullets",
+            items: [
+              "Encoder: learns increasingly abstract image features.",
+              "Bottleneck: holds compact context about the whole patch.",
+              "Decoder: converts features back into a full-resolution prediction.",
+              "Skip connection: preserves high-resolution edges and thin structures.",
+              "Output head: produces one class score per pixel."
+            ]
+          }
+        ]
+      },
+      {
+        heading: "Forward pass, loss, and gradients",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "The forward pass is one prediction. The model produces raw scores called logits. Sigmoid or softmax turns scores into probabilities. Loss measures how wrong the prediction is compared with the mask. Backpropagation computes gradients, and the optimizer uses those gradients to update the model parameters."
           },
           {
             type: "image",
@@ -719,11 +790,24 @@ export const lessons: Lesson[] = [
           },
           {
             type: "equation",
-            text: "loss = difference(prediction, target)"
+            text: "prediction = model(image)"
           },
           {
             type: "equation",
-            text: "training step: parameters <- parameters - learning_rate x gradient"
+            text: "loss = difference(prediction, target_mask)"
+          },
+          {
+            type: "equation",
+            text: "new_weight = old_weight - learning_rate x gradient"
+          },
+          {
+            type: "bullets",
+            items: [
+              "Binary cross entropy rewards correct foreground/background probabilities.",
+              "Dice loss rewards overlap and is useful when foreground pixels are rare.",
+              "Class imbalance matters because hydrides or defects may occupy a small fraction of the image.",
+              "A lower loss is useful only if the masks, split, and preprocessing are correct."
+            ]
           }
         ]
       },
@@ -747,21 +831,30 @@ export const lessons: Lesson[] = [
         ]
       },
       {
-        heading: "How a U-Net thinks",
+        heading: "Training workflow",
         blocks: [
           {
-            type: "paragraph",
-            text: "A U-Net is common for segmentation because it combines context and detail. The encoder compresses the image into feature maps that describe larger patterns. The decoder expands those features back to image size. Skip connections bring fine edge detail from the encoder to the decoder."
+            type: "image",
+            src: "tutorial-assets/infographics/ml-run-debug-loop.svg",
+            alt: "Infographic showing inspect data, debug run, train, evaluate, infer, review, and improve loop.",
+            caption: "A practical ML run moves from data inspection to a debug run, real training, evaluation, inference, review, and improvement."
           },
           {
-            type: "bullets",
+            type: "steps",
             items: [
-              "Convolution: a small learned filter that detects local patterns such as edges, texture, or contrast changes.",
-              "Feature map: an intermediate image-like array showing where a learned pattern appears.",
-              "Downsampling: reduces resolution so the model sees larger context.",
-              "Upsampling: restores resolution so the model can output one decision per pixel.",
-              "Skip connection: passes high-resolution detail around the bottleneck."
+              "Dataset stores images and masks in train, val, and test folders.",
+              "Dataloader reads files, applies transforms, and builds batches.",
+              "Augmentation creates safe variations such as crops, flips, blur, or contrast changes.",
+              "Model predicts masks for a batch.",
+              "Loss compares predictions with ground truth masks.",
+              "Optimizer updates weights.",
+              "Checkpoint, metrics, plots, and reports are written for review."
             ]
+          },
+          {
+            type: "callout",
+            title: "Before any ML run",
+            text: "Confirm the repo folder, active environment, dataset path, image/mask names, mask values, split, config, output directory, and whether the run is CPU debug or GPU training."
           }
         ]
       },
@@ -774,6 +867,8 @@ export const lessons: Lesson[] = [
               "Epoch: one pass through the training set.",
               "Batch: a small group of examples processed before one parameter update.",
               "Learning rate: how large each optimizer update is.",
+              "Checkpoint: saved model weights that can be evaluated, resumed, or used for inference.",
+              "Metric: a human-readable score such as Dice or IoU.",
               "Too high a learning rate can make training unstable.",
               "Too low a learning rate can make training painfully slow or stuck.",
               "Validation loss and metrics tell you whether the model is improving on examples it did not train on."
@@ -786,16 +881,26 @@ export const lessons: Lesson[] = [
         ]
       },
       {
-        heading: "What the optimizer does",
+        heading: "Overfitting and generalization",
         blocks: [
           {
             type: "paragraph",
-            text: "The optimizer is the rule that turns loss into parameter updates. It uses gradients, which point in the direction that would increase the loss. Training moves in the opposite direction. Adam is a common default because it adapts update sizes from recent gradient history."
+            text: "A model overfits when it learns the training examples too specifically and performs worse on new images. In microscopy this can happen when near-duplicate fields of view leak across splits, masks are inconsistent, or the training set is too narrow for the real variation in imaging conditions."
+          },
+          {
+            type: "bullets",
+            items: [
+              "Good sign: train loss and validation loss both improve, and visual predictions improve.",
+              "Overfit sign: train loss improves but validation loss or Dice gets worse.",
+              "Leakage sign: validation looks unrealistically good because very similar images are in train and val.",
+              "Augmentation can help, but it must preserve scientific meaning.",
+              "Early stopping stops training when validation stops improving."
+            ]
           },
           {
             type: "callout",
             title: "Do not tune blindly",
-            text: "When a model fails, first inspect data, masks, split leakage, and logs. Hyperparameters cannot fix mislabeled data or a broken dataset path."
+            text: "When a model fails, first inspect data, masks, split leakage, preprocessing, and logs. Hyperparameters cannot fix mislabeled data or a broken dataset path."
           }
         ]
       },
@@ -814,6 +919,80 @@ export const lessons: Lesson[] = [
         ]
       },
       {
+        heading: "Debug runs",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Debug runs are tiny runs designed to fail fast or prove that the pipeline works. They are not meant to produce a good model. They are meant to answer: can the code import, can the data load, do shapes match, does loss decrease, and are outputs written?"
+          },
+          {
+            type: "bullets",
+            items: [
+              "One-batch overfit: train on one or a few examples and confirm the model can memorize them.",
+              "Tiny dataset run: train for one epoch on a small prepared dataset to test the full command.",
+              "Shape mismatch: image and mask dimensions, channels, or batch shapes do not line up.",
+              "Wrong mask values: masks contain RGB colors or 255 values when the config expects class indices.",
+              "NaNs: loss becomes not-a-number because values, learning rate, or preprocessing are broken.",
+              "GPU out of memory: reduce image size, batch size, or model size.",
+              "Bad paths: the most common failure is still running a good command from the wrong folder."
+            ]
+          },
+          {
+            type: "callout",
+            title: "When training fails",
+            text: "Check in this order: current folder, active environment, dataset path, image/mask pairs, mask values, input shape, first error in the log, then GPU memory. Do not reinstall packages before reading the first real error."
+          }
+        ]
+      },
+      {
+        heading: "Inference workflow",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Inference uses a trained checkpoint to predict masks for new images. It should be treated like a controlled scientific workflow: load the exact checkpoint, apply the same preprocessing assumptions, generate predictions, export reports, and review failures."
+          },
+          {
+            type: "steps",
+            items: [
+              "Load checkpoint and model architecture.",
+              "Read the input image or image folder.",
+              "Apply preprocessing such as resizing, normalization, contrast adjustment, or channel conversion.",
+              "Run the forward pass to get probabilities or class scores.",
+              "Threshold or choose the highest-probability class for each pixel.",
+              "Post-process only when the rule is documented and scientifically acceptable.",
+              "Export masks, overlays, metrics, logs, and review reports.",
+              "Inspect failures and decide whether to fix data, labels, preprocessing, model settings, or post-processing."
+            ]
+          }
+        ]
+      },
+      {
+        heading: "How to read logs",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Logs are the experiment's running notebook. They tell you what command ran, which config and dataset were used, whether the GPU was active, how loss changed, where checkpoints were saved, and which error happened first."
+          },
+          {
+            type: "code",
+            language: "text",
+            code: "Epoch 12/40 - train_loss: 0.3124 - val_loss: 0.2987 - dice: 0.8921 - lr: 0.001\ncheckpoint: outputs/benchmarks/unet_binary_seed42/checkpoint_epoch_012.pth"
+          },
+          {
+            type: "bullets",
+            items: [
+              "Epoch tells you progress through training.",
+              "Train loss shows how well the model fits examples it learns from.",
+              "Validation loss shows whether the model improves on held-out examples.",
+              "Dice and IoU summarize mask overlap, but visual review still matters.",
+              "Learning rate helps explain instability or slow progress.",
+              "Checkpoint path tells you what model file can be evaluated or used for inference.",
+              "The first real error matters more than the last repeated stack trace line."
+            ]
+          }
+        ]
+      },
+      {
         heading: "Common segmentation metrics",
         blocks: [
           {
@@ -827,6 +1006,30 @@ export const lessons: Lesson[] = [
           {
             type: "equation",
             text: "Dice = 2 x overlap / (predicted area + true area)"
+          },
+          {
+            type: "callout",
+            title: "Command-line power moves",
+            text: "Use pwd to confirm location, ls or Get-ChildItem to inspect files, tail -f to watch logs, grep or Select-String to find errors, and always open the output folder before declaring a run successful."
+          }
+        ]
+      },
+      {
+        heading: "Small glossary",
+        blocks: [
+          {
+            type: "bullets",
+            items: [
+              "Tensor: a numbered array, such as an image batch shaped N x C x H x W.",
+              "Batch: a small group of examples processed together.",
+              "Epoch: one pass through the training split.",
+              "Loss: the number training tries to reduce.",
+              "Gradient: the direction each parameter should move to reduce loss.",
+              "Checkpoint: saved model weights from a training run.",
+              "Metric: an evaluation score such as Dice, IoU, precision, or recall.",
+              "Inference: using a trained model to predict outputs for new inputs.",
+              "Augmentation: safe transformations that expand training variation without changing the scientific meaning."
+            ]
           }
         ]
       }
@@ -1066,7 +1269,8 @@ export const lessons: Lesson[] = [
             type: "image",
             src: "tutorial-assets/infographics/hydride-lifecycle.svg",
             alt: "Infographic showing hydride segmentation lifecycle from raw image to mask, QA, U-Net training, prediction, review, correction and retraining.",
-            caption: "Hydride segmentation is an evidence loop: image, mask, QA, train, infer, review, correct, retrain."
+            caption: "Hydride segmentation is an evidence loop: image, mask, QA, train, infer, review, correct, retrain.",
+            size: "compact"
           },
           {
             type: "paragraph",
@@ -1109,7 +1313,8 @@ export const lessons: Lesson[] = [
             type: "image",
             src: "tutorial-assets/infographics/dataset-contract.svg",
             alt: "Hydride segmentation dataset contract with train validation test image mask folders.",
-            caption: "The hydride segmentation stack expects a predictable image/mask contract before training, evaluation, or HPC packaging."
+            caption: "The hydride segmentation stack expects a predictable image/mask contract before training, evaluation, or HPC packaging.",
+            size: "compact"
           },
           {
             type: "code",
@@ -1173,7 +1378,8 @@ export const lessons: Lesson[] = [
             type: "image",
             src: "tutorial-assets/screenshots/hydride-qt-segmentation-gui-annotated.png",
             alt: "Annotated Hydride segmentation GUI screenshot with labels for image path, model controls, correction tools, view tabs, microstructure image, export controls, and logs.",
-            caption: "Use the labels to scan the GUI: A input image path, B model and run controls, C correction tools, D view tabs, E microstructure image, F export/session actions, and G logs and metrics."
+            caption: "Use the labels to scan the GUI: A input image path, B model and run controls, C correction tools, D view tabs, E microstructure image, F export/session actions, and G logs and metrics.",
+            size: "normal"
           },
           {
             type: "bullets",

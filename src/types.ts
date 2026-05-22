@@ -30,7 +30,7 @@ export type LessonBlock =
   | { type: "code"; language: string; code: string }
   | { type: "callout"; title: string; text: string }
   | { type: "equation"; text: string }
-  | { type: "image"; src: string; alt: string; caption: string };
+  | { type: "image"; src: string; alt: string; caption: string; size?: "normal" | "wide" | "compact" };
 
 export interface LessonSection {
   heading: string;

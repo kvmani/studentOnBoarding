@@ -678,16 +678,35 @@ code {
 }
 
 .tutorial-figure {
-  margin: 16px 0 18px;
+  width: min(100%, 900px);
+  margin: 16px auto 18px;
 }
 
 .tutorial-figure img {
   display: block;
   width: 100%;
+  max-height: 620px;
+  object-fit: contain;
   border: 1px solid #d8e2de;
   border-radius: 8px;
   background: #10231f;
   box-shadow: 0 16px 38px rgba(23, 32, 28, 0.12);
+}
+
+.tutorial-figure.figure-wide {
+  width: 100%;
+}
+
+.tutorial-figure.figure-wide img {
+  max-height: 720px;
+}
+
+.tutorial-figure.figure-compact {
+  width: min(100%, 680px);
+}
+
+.tutorial-figure.figure-compact img {
+  max-height: 460px;
 }
 
 .tutorial-figure figcaption {
