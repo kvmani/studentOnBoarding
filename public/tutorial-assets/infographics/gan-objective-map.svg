@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">pix2pix and CycleGAN objective map</title>
+  <desc id="desc">Infographic showing generators, discriminators, reconstruction losses, adversarial losses, and cycle consistency for image translation.</desc>
+  <rect width="1200" height="680" fill="#f8faf9"/>
+  <rect x="40" y="42" width="1120" height="596" rx="8" fill="#ffffff" stroke="#d8e2de" stroke-width="3"/>
+  <text x="70" y="94" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700">Image-to-image translation: make useful images, then prove they look real</text>
+  <text x="70" y="132" fill="#587069" font-family="Segoe UI, Arial, sans-serif" font-size="20">pix2pix learns from aligned pairs. CycleGAN learns from two unpaired image folders using cycle consistency.</text>
+
+  <g transform="translate(70 175)">
+    <rect width="500" height="390" rx="8" fill="#e5f3f1" stroke="#2f6f73" stroke-width="3"/>
+    <text x="24" y="42" fill="#134e4a" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">pix2pix</text>
+    <text x="24" y="73" fill="#43544f" font-family="Segoe UI, Arial, sans-serif" font-size="17">Paired A/B examples: the target is registered with the input.</text>
+    <rect x="28" y="115" width="90" height="90" rx="8" fill="#f3f7f5" stroke="#73827d"/>
+    <path d="M45 178 C68 132,91 188,110 135" stroke="#6a7a72" stroke-width="12" fill="none" opacity=".75"/>
+    <text x="50" y="235" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700">input A</text>
+    <rect x="205" y="125" width="110" height="70" rx="8" fill="#ffffff" stroke="#2f6f73" stroke-width="3"/>
+    <text x="236" y="168" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">G</text>
+    <rect x="382" y="115" width="90" height="90" rx="8" fill="#fff3dd" stroke="#b05c2a"/>
+    <path d="M400 178 C423 132,446 188,465 135" stroke="#0f766e" stroke-width="12" fill="none"/>
+    <text x="401" y="235" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700">fake B</text>
+    <path d="M123 160 H199" stroke="#2f6f73" stroke-width="4"/><path d="M199 160 l-13-8 4 8-4 8z" fill="#2f6f73"/>
+    <path d="M318 160 H376" stroke="#2f6f73" stroke-width="4"/><path d="M376 160 l-13-8 4 8-4 8z" fill="#2f6f73"/>
+    <rect x="92" y="285" width="140" height="55" rx="8" fill="#ffffff" stroke="#b05c2a" stroke-width="3"/>
+    <text x="125" y="320" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">real B</text>
+    <rect x="285" y="278" width="160" height="70" rx="8" fill="#ffffff" stroke="#6956b5" stroke-width="3"/>
+    <text x="309" y="307" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="700">PatchGAN D</text>
+    <text x="315" y="331" fill="#587069" font-family="Segoe UI, Arial, sans-serif" font-size="14">real or fake?</text>
+    <path d="M232 312 H279" stroke="#6956b5" stroke-width="4"/><path d="M279 312 l-13-8 4 8-4 8z" fill="#6956b5"/>
+    <path d="M427 205 V270" stroke="#6956b5" stroke-width="4"/><path d="M427 270 l-8-13 8 4 8-4z" fill="#6956b5"/>
+    <text x="27" y="372" fill="#134e4a" font-family="Consolas, Cascadia Code, monospace" font-size="17">loss_G = GAN(fake B looks real) + lambda * L1(fake B, real B)</text>
+  </g>
+
+  <g transform="translate(630 175)">
+    <rect width="500" height="390" rx="8" fill="#fff3dd" stroke="#b05c2a" stroke-width="3"/>
+    <text x="24" y="42" fill="#7f3217" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">CycleGAN</text>
+    <text x="24" y="73" fill="#43544f" font-family="Segoe UI, Arial, sans-serif" font-size="17">Unpaired folders: trainA and trainB do not contain exact matches.</text>
+    <rect x="28" y="115" width="76" height="76" rx="8" fill="#f3f7f5" stroke="#73827d"/>
+    <path d="M43 168 C61 130,78 175,96 137" stroke="#6a7a72" stroke-width="10" fill="none" opacity=".75"/>
+    <text x="44" y="219" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700">A</text>
+    <rect x="145" y="122" width="76" height="62" rx="8" fill="#ffffff" stroke="#2f6f73" stroke-width="3"/>
+    <text x="162" y="160" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">G_AB</text>
+    <rect x="263" y="115" width="76" height="76" rx="8" fill="#f3f7f5" stroke="#b05c2a"/>
+    <path d="M278 168 C296 130,313 175,331 137" stroke="#0f766e" stroke-width="10" fill="none"/>
+    <text x="279" y="219" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700">fake B</text>
+    <rect x="382" y="122" width="76" height="62" rx="8" fill="#ffffff" stroke="#2f6f73" stroke-width="3"/>
+    <text x="399" y="160" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">G_BA</text>
+    <path d="M108 153 H139" stroke="#2f6f73" stroke-width="4"/><path d="M139 153 l-13-8 4 8-4 8z" fill="#2f6f73"/>
+    <path d="M225 153 H257" stroke="#2f6f73" stroke-width="4"/><path d="M257 153 l-13-8 4 8-4 8z" fill="#2f6f73"/>
+    <path d="M343 153 H376" stroke="#2f6f73" stroke-width="4"/><path d="M376 153 l-13-8 4 8-4 8z" fill="#2f6f73"/>
+    <rect x="28" y="280" width="125" height="55" rx="8" fill="#ffffff" stroke="#b05c2a" stroke-width="3"/>
+    <text x="51" y="315" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">D_A</text>
+    <rect x="190" y="280" width="125" height="55" rx="8" fill="#ffffff" stroke="#b05c2a" stroke-width="3"/>
+    <text x="213" y="315" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">D_B</text>
+    <rect x="350" y="280" width="110" height="55" rx="8" fill="#ffffff" stroke="#6956b5" stroke-width="3"/>
+    <text x="370" y="315" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">cycle</text>
+    <text x="26" y="372" fill="#7f3217" font-family="Consolas, Cascadia Code, monospace" font-size="17">A -> fake B -> A' and B -> fake A -> B' should reconstruct the start.</text>
+  </g>
+</svg>

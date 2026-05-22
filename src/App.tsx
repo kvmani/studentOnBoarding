@@ -1,8 +1,10 @@
 import {
   ArrowLeft,
   BookOpen,
+  Check,
   Clock3,
   Command,
+  Copy,
   ExternalLink,
   FileSearch,
   Gauge,
@@ -203,24 +205,32 @@ function Dashboard({ lessons: visibleLessons, onOpen, query }: { lessons: Lesson
 
       {query ? <p className="result-count">{visibleLessons.length} matching lesson(s)</p> : null}
 
-      <div className="lesson-grid">
-        {visibleLessons.map((lesson) => (
-          <button key={lesson.id} className="lesson-card" type="button" onClick={() => onOpen(lesson.id)}>
-            <span className="card-icon">{categoryIcons[lesson.category] ?? <BookOpen size={22} />}</span>
-            <span className="card-meta">
-              <Clock3 size={15} />
-              {lesson.durationMinutes} min
-            </span>
-            <strong>{lesson.title}</strong>
-            <span>{lesson.summary}</span>
-            <span className="tag-list">
-              {lesson.tags.slice(0, 3).map((tag) => (
-                <em key={tag}>{tag}</em>
-              ))}
-            </span>
-          </button>
-        ))}
-      </div>
+      {visibleLessons.length > 0 ? (
+        <div className="lesson-grid">
+          {visibleLessons.map((lesson) => (
+            <button key={lesson.id} className="lesson-card" type="button" onClick={() => onOpen(lesson.id)}>
+              <span className="card-icon">{categoryIcons[lesson.category] ?? <BookOpen size={22} />}</span>
+              <span className="card-meta">
+                <Clock3 size={15} />
+                {lesson.durationMinutes} min
+              </span>
+              <strong>{lesson.title}</strong>
+              <span>{lesson.summary}</span>
+              <span className="tag-list">
+                {lesson.tags.slice(0, 3).map((tag) => (
+                  <em key={tag}>{tag}</em>
+                ))}
+              </span>
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="empty-state">
+          <Search size={28} />
+          <strong>No matching lessons</strong>
+          <p>Try a tool name, workflow, command, dataset term, or model name such as VS Code, venv, hydride, pix2pix, QA, or HPC.</p>
+        </div>
+      )}
     </>
   );
 }
@@ -338,11 +348,7 @@ function BlockRenderer({ block }: { block: LessonBlock }) {
         </ol>
       );
     case "code":
-      return (
-        <pre>
-          <code>{block.code}</code>
-        </pre>
-      );
+      return <CodeBlock language={block.language} code={block.code} />;
     case "callout":
       return (
         <div className="callout">
@@ -361,6 +367,55 @@ function BlockRenderer({ block }: { block: LessonBlock }) {
       );
     default:
       return null;
+  }
+}
+
+function CodeBlock({ language, code }: { language: string; code: string }) {
+  const [copied, setCopied] = useState(false);
+
+  async function handleCopy() {
+    try {
+      await copyText(code);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      setCopied(false);
+    }
+  }
+
+  return (
+    <div className="code-block">
+      <div className="code-toolbar">
+        <span>{language}</span>
+        <button type="button" onClick={handleCopy} aria-label="Copy code">
+          {copied ? <Check size={16} /> : <Copy size={16} />}
+          {copied ? "Copied" : "Copy"}
+        </button>
+      </div>
+      <pre>
+        <code>{code}</code>
+      </pre>
+    </div>
+  );
+}
+
+async function copyText(text: string) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.setAttribute("readonly", "true");
+  textArea.style.position = "fixed";
+  textArea.style.left = "-9999px";
+  document.body.appendChild(textArea);
+  textArea.select();
+  const copied = document.execCommand("copy");
+  document.body.removeChild(textArea);
+  if (!copied) {
+    throw new Error("Copy failed");
   }
 }
 

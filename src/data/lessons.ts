@@ -69,16 +69,19 @@ export const lessons: Lesson[] = [
         blocks: [
           {
             type: "image",
-            src: "tutorial-assets/screenshots/vscode-hydride-qa.png",
-            alt: "Representative VS Code screenshot showing a hydride segmentation project, Python file, Explorer, and activated PowerShell terminal.",
-            caption: "This representative screenshot shows the daily pattern: project folder open, Python file in the editor, and an activated PowerShell terminal running dataset checks."
+            src: "tutorial-assets/screenshots/vscode-hydride-qa-annotated.png",
+            alt: "Annotated VS Code screenshot showing labeled regions for Explorer, virtual environment, editor, terminal, active environment prompt, and QA output.",
+            caption: "Follow the labels: A is the Explorer tree, B is the project .venv folder, C is the editor, D is the terminal, E is the active .venv prompt, and F is the dataset QA output."
           },
           {
             type: "bullets",
             items: [
-              "Explorer: shows folders and files in the current project.",
-              "Editor: where you read and edit Python, YAML, Markdown, and text files.",
-              "Terminal: where commands are run from the current folder.",
+              "A - Explorer tree: shows folders and files in the current project.",
+              "B - Project .venv: the local Python environment that keeps packages tied to this project.",
+              "C - Editor: where you read and edit Python, YAML, Markdown, and text files.",
+              "D - Terminal: where commands are run from the current folder.",
+              "E - Active .venv prompt: the visible clue that terminal Python is using the project environment.",
+              "F - QA passed output: proof that the command ran and produced useful evidence.",
               "Status bar: shows interpreter, branch, errors, and environment clues.",
               "Command Palette: searchable command box opened with Ctrl+Shift+P."
             ]
@@ -270,13 +273,13 @@ export const lessons: Lesson[] = [
         blocks: [
           {
             type: "paragraph",
-            text: "MobaXterm is a Windows tool that combines SSH terminal access and a file-transfer pane. Use it when the work happens on a Linux GPU server but you are starting from a Windows desktop."
+            text: "MobaXterm is a Windows tool that combines SSH terminal access and a file-transfer pane. In the annotated screenshot, A is saved sessions, B is the Linux terminal, and G is the SFTP file browser. Use it when the work happens on a Linux GPU server but you are starting from a Windows desktop."
           },
           {
             type: "image",
-            src: "tutorial-assets/screenshots/mobaxterm-gpu-server.png",
-            alt: "Representative MobaXterm screenshot showing SSH terminal, sessions, and SFTP file browser.",
-            caption: "A typical session has saved servers on the left, the Linux terminal in the middle, and remote files on the right."
+            src: "tutorial-assets/screenshots/mobaxterm-gpu-server-annotated.png",
+            alt: "Annotated MobaXterm screenshot showing saved SSH sessions, Linux terminal, current folder, environment setup, job queue, live log, and SFTP browser.",
+            caption: "Read the workflow left to right: A saved SSH sessions, B Linux SSH terminal, C current server folder, D environment setup, E submit and queue, F live training log, and G SFTP file browser."
           }
         ]
       },
@@ -290,8 +293,8 @@ export const lessons: Lesson[] = [
               "Click Session, choose SSH, and enter the mentor-provided host name.",
               "Enter your username, usually not your Windows display name.",
               "Keep the port at 22 unless the lab note says otherwise.",
-              "Save the session with a clear name such as gpu-lab-server.",
-              "Connect and confirm that the terminal prompt shows the server name."
+              "Save the session with a clear name such as gpu-lab-server; saved sessions appear at label A.",
+              "Connect and confirm that the terminal prompt in label B shows the server name."
             ]
           },
           {
@@ -306,7 +309,7 @@ export const lessons: Lesson[] = [
         blocks: [
           {
             type: "paragraph",
-            text: "The right-side SFTP browser follows the server folder. Use it for small configs, manifests, and logs. Do not drag large datasets casually; use the lab's approved transfer path for big data."
+            text: "The right-side SFTP browser marked G follows the server folder. Use it for small configs, manifests, and logs. The current working folder is marked C in the terminal; do not drag large datasets casually, and use the lab's approved transfer path for big data."
           },
           {
             type: "code",
@@ -328,10 +331,10 @@ export const lessons: Lesson[] = [
             items: [
               "Activate the approved server environment.",
               "Load required modules if the server uses modules.",
-              "Open the job script and check dataset paths, output paths, GPU request, and runtime.",
-              "Submit the job.",
-              "Check the queue.",
-              "Watch the log until you see epochs, loss, and validation metrics."
+              "Open the job script in the SFTP browser at label G and check dataset paths, output paths, GPU request, and runtime.",
+              "Submit the job from the terminal; label E shows the sbatch and squeue pattern.",
+              "Check the queue at label E.",
+              "Watch the log at label F until you see epochs, loss, and validation metrics."
             ]
           },
           {
@@ -833,17 +836,17 @@ export const lessons: Lesson[] = [
   },
   {
     id: "pix2pix-cyclegan-microscopy",
-    title: "pix2pix and CycleGAN for Microscopy",
-    summary: "See how paired and unpaired image-to-image models are used for scientific microscopy workflows.",
+    title: "pix2pix and CycleGAN: Image Translation Workflows",
+    summary: "Learn the science, math, data contracts, debug runs, training commands, inference commands, and HPC habits for paired and unpaired microscopy image translation.",
     category: "Machine Learning",
-    tags: ["pix2pix", "CycleGAN", "image translation", "microscopy"],
+    tags: ["pix2pix", "CycleGAN", "GAN", "image translation", "microscopy", "debug runs"],
     durationMinutes: 15,
     level: "Workflow",
-    prerequisites: ["Machine learning basics"],
+    prerequisites: ["Machine learning basics", "Terminal basics", "Python virtual environments"],
     visual: "gan",
     sections: [
       {
-        heading: "Two related ideas",
+        heading: "The philosophy",
         blocks: [
           {
             type: "image",
@@ -852,11 +855,49 @@ export const lessons: Lesson[] = [
             caption: "pix2pix needs aligned input-target examples. CycleGAN can learn from two image domains without exact pairs."
           },
           {
+            type: "paragraph",
+            text: "Image-to-image translation asks a practical question: if this is the image we can easily measure, what would the matching useful image look like? In microscopy that can mean noisy EBSD to cleaned EBSD, synthetic or processed contrast to real-looking contrast, label map to particle image, or one imaging condition to another."
+          },
+          {
             type: "bullets",
             items: [
-              "pix2pix learns from paired examples: input image and target image are aligned.",
-              "CycleGAN learns from unpaired domains: images from domain A and images from domain B do not need exact pairs.",
-              "In microscopy, these can support restoration, contrast transfer, modality translation, and synthetic target generation."
+              "pix2pix is strict and powerful when you have paired evidence: input A and target B must describe the same field of view, pixel-for-pixel or close to it.",
+              "CycleGAN is flexible when exact pairs are unavailable: it learns the style and structure of domain A and domain B from separate folders.",
+              "Both are generators plus critics. The generator tries to create useful images. The discriminator tries to catch fake images. Training improves because both networks compete.",
+              "The scientific danger is hallucination. These models can make plausible-looking images that are wrong, so output review and quantitative validation are part of the workflow."
+            ]
+          },
+          {
+            type: "callout",
+            title: "Command-line power",
+            text: "A full ML experiment becomes a repeatable sentence: code version plus dataset path plus config plus run name plus output folder. That is why terminal commands beat manual clicking for serious training."
+          }
+        ]
+      },
+      {
+        heading: "Math in beginner language",
+        blocks: [
+          {
+            type: "image",
+            src: "tutorial-assets/infographics/gan-objective-map.svg",
+            alt: "Infographic showing pix2pix and CycleGAN generator, discriminator, adversarial loss, L1 loss, and cycle consistency.",
+            caption: "GAN training combines a realism game with task-specific reconstruction rules."
+          },
+          {
+            type: "paragraph",
+            text: "A generator G maps an input image to an output image. A discriminator D sees image patches and predicts whether they look real. G is rewarded when D is fooled, but that alone is not enough for science: pix2pix also compares the generated target to the known target, while CycleGAN checks that translating there and back reconstructs the original."
+          },
+          { type: "equation", text: "pix2pix: G learns A -> B" },
+          { type: "equation", text: "pix2pix generator loss = adversarial_loss(D, G(A)) + lambda x L1(G(A), B)" },
+          { type: "equation", text: "CycleGAN: G_AB learns A -> B, and G_BA learns B -> A" },
+          { type: "equation", text: "cycle loss = |G_BA(G_AB(A)) - A| + |G_AB(G_BA(B)) - B|" },
+          {
+            type: "bullets",
+            items: [
+              "Adversarial loss says: make the output look like it belongs to the target domain.",
+              "L1 loss says: in paired data, stay close to the known answer at each pixel.",
+              "Cycle consistency says: if an A image becomes a B image, converting it back should recover the original A image.",
+              "Identity loss, when enabled in some CycleGAN setups, says: if a B image is already in domain B, do not unnecessarily change it."
             ]
           }
         ]
@@ -879,40 +920,188 @@ export const lessons: Lesson[] = [
           {
             type: "code",
             language: "text",
-            code: "pix2pix paired:\n  dataset/train/*.png\n  dataset/val/*.png\n  dataset/test/*.png\n\nCycleGAN unpaired:\n  dataset/trainA/*.png\n  dataset/trainB/*.png\n  dataset/testA/*.png\n  dataset/testB/*.png"
+            code: "pix2pix aligned dataset used by the PyTorch repo:\n  datasets/my_paired_dataset/\n    train/*.png   # each image usually stores A and B side-by-side\n    val/*.png\n    test/*.png\n\nCycleGAN unaligned dataset:\n  datasets/my_unpaired_dataset/\n    trainA/*.png  # source domain A\n    trainB/*.png  # target domain B\n    testA/*.png\n    testB/*.png\n\nPowder TensorFlow pix2pix local example:\n  data/powder/\n    train/*.png\n    val/*.png\n    test/*.png\n  # provided examples are 256x512 PNGs: 256 px input + 256 px target"
+          },
+          {
+            type: "callout",
+            title: "Pro tip: inspect before training",
+            text: "In VS Code, use Ctrl+Shift+F for dataset folder names and Ctrl+P for scripts. In PowerShell, run Get-ChildItem datasets\\my_dataset -Recurse | Select-Object -First 20 to see whether the folder contract is real."
           }
         ]
       },
       {
-        heading: "Typical dry-run habit",
+        heading: "Set up the PyTorch repo",
         blocks: [
           {
             type: "code",
             language: "powershell",
-            code: "microi2i train --config configs/train/pix2pix.default.yml --dry-run\nmicroi2i train --config configs/train/cyclegan.default.yml --dry-run"
+            code: "cd C:\\Users\\kvman\\PycharmProjects\\pytorch-CycleGAN-and-pix2pix\npython -m venv .venv\n.\\.venv\\Scripts\\Activate.ps1\npython -m pip install --upgrade pip\npython -m pip install -r requirements.txt\npython scripts\\microi2i_cli.py models --details"
+          },
+          {
+            type: "code",
+            language: "bash",
+            code: "cd /scratch/student/pytorch-CycleGAN-and-pix2pix\npython3 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npython -m pip install -r requirements.txt\npython scripts/microi2i_cli.py models --details"
+          }
+        ]
+      },
+      {
+        heading: "Dry runs and debug runs",
+        blocks: [
+          {
+            type: "image",
+            src: "tutorial-assets/infographics/ml-command-workflow.svg",
+            alt: "Infographic showing command-line machine learning workflow from inspection to environment activation, QA, debug run, full run and review.",
+            caption: "Debug runs are not toy work. They prove that paths, imports, GPU selection, output writing, and basic data loading work before a long run starts."
+          },
+          {
+            type: "code",
+            language: "powershell",
+            code: "python scripts\\microi2i_cli.py train --config configs\\train\\pix2pix.default.yml --dry-run\npython scripts\\microi2i_cli.py train --config configs\\train\\cyclegan.default.yml --dry-run\npython scripts\\microi2i_cli.py infer --config configs\\inference\\folder.default.yml --dry-run"
+          },
+          {
+            type: "code",
+            language: "powershell",
+            code: "python train.py --dataroot .\\datasets\\facades --name debug_facades_pix2pix --model pix2pix --dataset_mode aligned --direction BtoA --gpu_ids -1 --n_epochs 1 --n_epochs_decay 0 --max_dataset_size 4 --batch_size 1 --display_id -1 --print_freq 1 --save_epoch_freq 1"
+          },
+          {
+            type: "code",
+            language: "powershell",
+            code: "python train.py --dataroot .\\datasets\\maps --name debug_maps_cyclegan --model cycle_gan --dataset_mode unaligned --gpu_ids -1 --n_epochs 1 --n_epochs_decay 0 --max_dataset_size 4 --batch_size 1 --display_id -1 --print_freq 1 --save_epoch_freq 1"
           },
           {
             type: "callout",
-            title: "Dry run first",
-            text: "A dry run validates configuration and paths before starting a long training job."
+            title: "Debug run rule",
+            text: "A debug run should finish quickly and create outputs. It does not need good accuracy. If a one-epoch run cannot save images and checkpoints, a 200-epoch run will only waste more time."
+          }
+        ]
+      },
+      {
+        heading: "Training commands",
+        blocks: [
+          {
+            type: "code",
+            language: "powershell",
+            code: "python train.py --dataroot .\\datasets\\my_paired_dataset --name microscopy_pix2pix_v001 --model pix2pix --dataset_mode aligned --direction BtoA --gpu_ids 0 --batch_size 1 --load_size 256 --crop_size 256 --n_epochs 100 --n_epochs_decay 100 --display_id -1 --save_epoch_freq 5"
+          },
+          {
+            type: "code",
+            language: "powershell",
+            code: "python train.py --dataroot .\\datasets\\my_unpaired_dataset --name microscopy_cyclegan_v001 --model cycle_gan --dataset_mode unaligned --gpu_ids 0 --batch_size 1 --load_size 256 --crop_size 256 --n_epochs 100 --n_epochs_decay 100 --display_id -1 --save_epoch_freq 5"
+          },
+          {
+            type: "code",
+            language: "bash",
+            code: "sbatch train_i2i_1gpu.slurm\nsqueue -u $USER\ntail -f logs/microscopy_pix2pix_v001.out"
+          },
+          {
+            type: "callout",
+            title: "Name runs like evidence",
+            text: "Use run names that include the dataset, model, direction, and version. Later, checkpoints, HTML previews, loss logs, and result folders are easier to trace."
+          }
+        ]
+      },
+      {
+        heading: "Inference commands",
+        blocks: [
+          {
+            type: "code",
+            language: "powershell",
+            code: "python test.py --dataroot .\\datasets\\my_paired_dataset --name microscopy_pix2pix_v001 --model pix2pix --dataset_mode aligned --direction BtoA --gpu_ids -1 --num_test 20 --results_dir .\\results"
+          },
+          {
+            type: "code",
+            language: "powershell",
+            code: "python test.py --dataroot .\\datasets\\my_unpaired_dataset\\testA --name microscopy_cyclegan_v001 --model test --dataset_mode single --no_dropout --gpu_ids -1 --num_test 20 --results_dir .\\results"
+          },
+          {
+            type: "code",
+            language: "text",
+            code: "Typical outputs:\n  checkpoints/microscopy_pix2pix_v001/latest_net_G.pth\n  checkpoints/microscopy_pix2pix_v001/web/index.html\n  results/microscopy_pix2pix_v001/test_latest/index.html\n  results/microscopy_pix2pix_v001/test_latest/images/*.png"
+          }
+        ]
+      },
+      {
+        heading: "Powder pix2pix local example",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "The powderSegementation repository is a local TensorFlow pix2pix-style workflow for powder particle segmentation. It is useful because the data subset is included, the Windows batch files show real hyperparameters, and codeDevelopmentMode runs a small debug training pass."
+          },
+          {
+            type: "code",
+            language: "powershell",
+            code: "cd C:\\Users\\kvman\\PycharmProjects\\powderSegementation\npython pix2pixTensorFlow2.0.py --input_dir .\\data\\powder --mode train --codeDevelopmentMode True --imType .png --imDataSetType grainBoundary --max_epochs 10 --max_steps 100 --batch_size 1 --lr 1e-4 --lrDescriminator 1e-4 --gan_weight 1.0 --l2_weight 100.0 --output_group_dir PowderDebug --fileNamePrefix debug_powder --comment \"debug smoke run\""
+          },
+          {
+            type: "code",
+            language: "powershell",
+            code: ".\\runPowderTraining.bat\n\n# For inference, edit INPUT_DIR and CHECKPOINT_DIR inside the file first.\n.\\runPowderInference.bat"
+          },
+          {
+            type: "callout",
+            title: "Batch files are readable notebooks",
+            text: "Open .bat files in VS Code before running them. They are command recipes: paths, learning rates, loss weights, comments, and output names are all visible."
           }
         ]
       }
     ],
     links: [{ label: "Internal CycleGAN/pix2pix repo", configKey: "cycleGanRepoUrl" }],
-    nextLessonIds: ["gpu-cluster-workflow"]
+    nextLessonIds: ["hydride-segmentation-workflow", "gpu-cluster-workflow"]
   },
   {
     id: "hydride-segmentation-workflow",
-    title: "Hydride Segmentation Dataset Workflow",
-    summary: "Use the canonical image/mask dataset structure expected by the segmentation training stack.",
+    title: "Hydride Segmentation: Science, Training, Inference",
+    summary: "Understand hydride masks, U-Net training, dataset QA, debug datasets, CLI commands, GUI review, inference exports, and HPC packaging.",
     category: "Segmentation",
-    tags: ["hydride", "segmentation", "dataset", "train-val-test"],
+    tags: ["hydride", "segmentation", "U-Net", "dataset", "train-val-test", "inference", "HPC"],
     durationMinutes: 15,
     level: "Workflow",
-    prerequisites: ["Microstructure annotation workflow", "Machine learning basics"],
+    prerequisites: ["Microstructure annotation workflow", "Machine learning basics", "Python virtual environments"],
     visual: "segmentation",
     sections: [
+      {
+        heading: "The scientific goal",
+        blocks: [
+          {
+            type: "image",
+            src: "tutorial-assets/infographics/hydride-lifecycle.svg",
+            alt: "Infographic showing hydride segmentation lifecycle from raw image to mask, QA, U-Net training, prediction, review, correction and retraining.",
+            caption: "Hydride segmentation is an evidence loop: image, mask, QA, train, infer, review, correct, retrain."
+          },
+          {
+            type: "paragraph",
+            text: "Hydrides appear as dark, plate-like or needle-like structures in optical microstructure images. The segmentation task is to assign every pixel to background or hydride so downstream analysis can measure hydride fraction, size distribution, connectivity, and orientation."
+          },
+          {
+            type: "bullets",
+            items: [
+              "Input image: the microscope image or a preprocessed version of it.",
+              "Target mask: an indexed image where background is 0 and hydride is usually 1.",
+              "Prediction: the model's probability map or binary mask after thresholding.",
+              "Review: a human checks where the model missed thin hydrides, merged nearby structures, or hallucinated artifacts.",
+              "Feedback: corrected masks become training evidence for the next model."
+            ]
+          }
+        ]
+      },
+      {
+        heading: "Math behind segmentation",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "A U-Net performs pixel classification. The encoder compresses local image patches into features; the decoder expands those features back to image resolution. Skip connections preserve edge detail so thin hydrides are not lost during downsampling."
+          },
+          { type: "equation", text: "model(image)[y, x] = probability that pixel (y, x) is hydride" },
+          { type: "equation", text: "binary cross entropy rewards correct foreground/background probabilities" },
+          { type: "equation", text: "Dice = 2 x overlap / (predicted area + true area)" },
+          { type: "equation", text: "IoU = overlap / union" },
+          {
+            type: "callout",
+            title: "Metrics are not a microscope",
+            text: "Dice and IoU summarize overlap, but hydride workflows still need visual review. A model can get a decent score while failing on thin, low-contrast, or rare structures."
+          }
+        ]
+      },
       {
         heading: "Canonical dataset layout",
         blocks: [
@@ -925,7 +1114,7 @@ export const lessons: Lesson[] = [
           {
             type: "code",
             language: "text",
-            code: "<dataset_root>/\n  train/\n    images/\n    masks/\n  val/\n    images/\n    masks/\n  test/\n    images/\n    masks/"
+            code: "<dataset_root>/\n  train/\n    images/\n    masks/\n  val/\n    images/\n    masks/\n  test/\n    images/\n    masks/\n\nExample pair:\n  train/images/hydride_0007.png\n  train/masks/hydride_0007.png\n\nMask values:\n  0 = background\n  1 = hydride"
           },
           {
             type: "paragraph",
@@ -934,32 +1123,154 @@ export const lessons: Lesson[] = [
         ]
       },
       {
-        heading: "Fair comparison rules",
+        heading: "Set up the environment",
         blocks: [
+          {
+            type: "code",
+            language: "powershell",
+            code: "cd C:\\Users\\kvman\\HydrideSegmentation\npython -m venv .venv\n.\\.venv\\Scripts\\Activate.ps1\npython -m pip install --upgrade pip\npython -m pip install -r requirements-core.txt\npython -m pip install -e .\nmicroseg-cli models --details"
+          },
+          {
+            type: "code",
+            language: "bash",
+            code: "cd /scratch/student/HydrideSegmentation\npython3 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npython -m pip install -r requirements-core.txt\npython -m pip install -e .\nmicroseg-cli models --details"
+          },
+          {
+            type: "callout",
+            title: "VS Code pro tip",
+            text: "After activating .venv in the terminal, also select the same interpreter with Ctrl+Shift+P -> Python: Select Interpreter. Terminal Python and editor Python should point to the same environment."
+          }
+        ]
+      },
+      {
+        heading: "QA and preparation",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Dataset QA is the training gate. Run it before training and after any annotation export, split, resize, transfer, or manual file move."
+          },
+          {
+            type: "code",
+            language: "powershell",
+            code: "microseg-cli dataset-qa --config configs\\dataset_qa.default.yml --dataset-dir outputs\\prepared_dataset_hydride_v1 --output-path outputs\\qa\\hydride_v1_qa.json --strict"
+          },
+          {
+            type: "code",
+            language: "powershell",
+            code: "microseg-cli prepare_dataset --input-dir D:\\datasets\\hydride_pairs_raw --output-root outputs\\prepared_dataset_hydride_v1 --style mado --target-size 512 --train-frac 0.8 --val-frac 0.1 --debug --num-debug 8 --seed 42"
+          },
+          {
+            type: "callout",
+            title: "Read output paths",
+            text: "CLI tools usually print where reports were written. Ctrl+click paths in the VS Code terminal, or copy them into Explorer, instead of hunting manually."
+          }
+        ]
+      },
+      {
+        heading: "Debug dataset and training",
+        blocks: [
+          {
+            type: "image",
+            src: "tutorial-assets/screenshots/hydride-qt-segmentation-gui-annotated.png",
+            alt: "Annotated Hydride segmentation GUI screenshot with labels for image path, model controls, correction tools, view tabs, microstructure image, export controls, and logs.",
+            caption: "Use the labels to scan the GUI: A input image path, B model and run controls, C correction tools, D view tabs, E microstructure image, F export/session actions, and G logs and metrics."
+          },
           {
             type: "bullets",
             items: [
-              "Freeze one train/val/test split before model comparison.",
-              "Use the same split for every model.",
-              "Use validation for tuning and test only for final reporting.",
-              "Record configs, seeds, dataset path, and output folder for each run."
+              "A - Input image path tells you exactly which file is being segmented.",
+              "B - Model and run controls select the method and start segmentation.",
+              "C - Correction tools are for reviewing and editing masks after prediction.",
+              "D - View tabs switch between input, predicted mask, overlay, correction split view, and workflow tools.",
+              "E - Microstructure image is the scientific evidence the model sees.",
+              "F - Export/session controls save corrected samples and review work.",
+              "G - Logs and metrics show whether the run completed and what it measured."
+            ]
+          },
+          {
+            type: "code",
+            language: "powershell",
+            code: "python scripts\\build_debug_duplicate_dataset.py --image-path test_data\\syntheticHydrides.png --output-dir outputs\\debug_hydride_dataset --train-count 4 --val-count 2 --resize-width 256 --resize-height 256\nmicroseg-cli dataset-qa --config configs\\dataset_qa.default.yml --dataset-dir outputs\\debug_hydride_dataset --strict"
+          },
+          {
+            type: "code",
+            language: "powershell",
+            code: "microseg-cli train --config configs\\train.default.yml --dataset-dir outputs\\debug_hydride_dataset --output-dir outputs\\training_debug\\unet_binary_cpu --backend unet_binary --epochs 1 --batch-size 1 --max-samples 4 --input-hw 256,256 --device-policy cpu --no-auto-prepare-dataset --set seed=42"
+          },
+          {
+            type: "callout",
+            title: "The win condition",
+            text: "A debug run is successful when it starts, logs progress, writes a checkpoint/report, and exits cleanly. Accuracy is not the point."
+          }
+        ]
+      },
+      {
+        heading: "Full training and evaluation",
+        blocks: [
+          {
+            type: "code",
+            language: "powershell",
+            code: "microseg-cli train --config configs\\train.default.yml --dataset-dir outputs\\prepared_dataset_hydride_v1 --output-dir outputs\\benchmarks\\unet_binary_seed42 --backend unet_binary --epochs 8 --batch-size 8 --learning-rate 0.001 --input-hw 512,512 --device-policy cpu --no-auto-prepare-dataset --set seed=42"
+          },
+          {
+            type: "code",
+            language: "bash",
+            code: "microseg-cli train --config configs/train.default.yml --dataset-dir outputs/prepared_dataset_hydride_v1 --output-dir outputs/benchmarks/unet_binary_seed42_gpu --backend unet_binary --epochs 40 --batch-size 8 --learning-rate 0.001 --input-hw 512,512 --enable-gpu --device-policy cuda --no-auto-prepare-dataset --set seed=42"
+          },
+          {
+            type: "code",
+            language: "powershell",
+            code: "microseg-cli evaluate --config configs\\evaluate.default.yml --dataset-dir outputs\\prepared_dataset_hydride_v1 --model-path outputs\\benchmarks\\unet_binary_seed42\\model.pth --split val --output-path outputs\\evaluation\\unet_binary_seed42_val.json"
+          },
+          {
+            type: "bullets",
+            items: [
+              "Train split updates model weights.",
+              "Validation split guides settings and early stopping.",
+              "Test split is held back for final reporting only.",
+              "Keep the same split when comparing U-Net, transformer, SegFormer, or pretrained variants.",
+              "Record config, seed, dataset path, output folder, checkpoint, and metrics for every model."
             ]
           }
         ]
       },
       {
-        heading: "Starter commands",
+        heading: "Inference and review",
         blocks: [
           {
-            type: "image",
-            src: "tutorial-assets/screenshots/hydride-qt-segmentation-gui.png",
-            alt: "Hydride segmentation GUI screenshot with input image, prediction controls, correction tools, and logs.",
-            caption: "The local hydride GUI helps students connect the concepts: input image, predicted mask, correction workflow, classes, and logs."
+            type: "code",
+            language: "powershell",
+            code: "microseg-cli infer --config configs\\inference.default.yml --image test_data\\3PB_SRT_data_generation_1817_OD_side1_8.png --output-dir outputs\\inference\\single_debug --device-policy cpu"
           },
           {
             type: "code",
             language: "powershell",
-            code: "microseg-cli dataset-qa --config configs/dataset_qa.default.yml --dataset-dir outputs/prepared_dataset_hydride_v1 --strict\nmicroseg-cli train --config configs/hydride/train.unet_binary.baseline.yml --dataset-dir outputs/prepared_dataset_hydride_v1 --output-dir outputs/benchmarks/unet_binary_seed42 --set seed=42 --no-auto-prepare-dataset"
+            code: "microseg-cli infer --config configs\\inference.default.yml --image-dir D:\\datasets\\hydride_review_images --recursive --output-dir outputs\\inference\\review_batch --model-name \"Hydride ML (UNet)\" --device-policy cpu --operator-id student01"
+          },
+          {
+            type: "code",
+            language: "text",
+            code: "Typical inference exports:\n  outputs/inference/review_batch/runs/*\n  outputs/inference/review_batch/batch_results_summary.json\n  outputs/inference/review_batch/batch_results_report.html\n  outputs/inference/review_batch/batch_metrics.csv\n  outputs/feedback_records/*"
+          },
+          {
+            type: "callout",
+            title: "Review like a scientist",
+            text: "Open the HTML report and inspect false positives, missed thin hydrides, poor contrast regions, and strange preprocessing effects. Then decide whether the fix is data, labels, model settings, or post-processing."
+          }
+        ]
+      },
+      {
+        heading: "HPC packaging",
+        blocks: [
+          {
+            type: "code",
+            language: "bash",
+            code: "microseg-cli hpc-ga-generate \\\n  --config configs/hpc_ga.top5_scratch.default.yml \\\n  --dataset-dir outputs/prepared_dataset_hydride_v1 \\\n  --output-dir outputs/hpc_ga_bundle_top5_scratch\n\nfind outputs/hpc_ga_bundle_top5_scratch -maxdepth 2 -type f | head\nsbatch outputs/hpc_ga_bundle_top5_scratch/jobs/*.slurm\nsqueue -u $USER\ntail -f outputs/hpc_ga_bundle_top5_scratch/logs/*.out"
+          },
+          {
+            type: "callout",
+            title: "HPC pro tip",
+            text: "The first useful error is usually near the top of the log after environment setup. Search logs with grep -n \"error\\|failed\\|Traceback\" logs/*.out instead of scrolling for five minutes."
           }
         ]
       }

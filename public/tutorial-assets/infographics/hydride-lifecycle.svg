@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">Hydride segmentation lifecycle</title>
+  <desc id="desc">Hydride segmentation workflow from microscope images through annotation, dataset QA, U-Net training, inference, review, correction, and retraining.</desc>
+  <rect width="1200" height="620" fill="#f8faf9"/>
+  <rect x="40" y="40" width="1120" height="540" rx="8" fill="#ffffff" stroke="#d8e2de" stroke-width="3"/>
+  <text x="70" y="92" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700">Hydride segmentation is a feedback loop, not a single button</text>
+  <text x="70" y="130" fill="#587069" font-family="Segoe UI, Arial, sans-serif" font-size="20">The model improves when images, masks, checks, predictions, corrections, and reports stay connected.</text>
+  <g font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">
+    <rect x="85" y="210" width="140" height="110" rx="8" fill="#dbe7e2" stroke="#73827d" stroke-width="3"/>
+    <path d="M107 286 C135 225,175 294,213 226" stroke="#6a7a72" stroke-width="14" fill="none" opacity=".75"/>
+    <text x="112" y="360" fill="#17201c">raw image</text>
+    <rect x="285" y="210" width="140" height="110" rx="8" fill="#111827" stroke="#111827" stroke-width="3"/>
+    <path d="M309 286 C337 225,377 294,415 226" stroke="#78d28a" stroke-width="14" fill="none"/>
+    <text x="317" y="360" fill="#17201c">mask label</text>
+    <rect x="485" y="210" width="140" height="110" rx="8" fill="#fff3dd" stroke="#b05c2a" stroke-width="3"/>
+    <text x="526" y="255" fill="#7f3217">QA</text>
+    <text x="508" y="285" fill="#17201c" font-family="Consolas, Cascadia Code, monospace" font-size="17">names</text>
+    <text x="512" y="310" fill="#17201c" font-family="Consolas, Cascadia Code, monospace" font-size="17">sizes</text>
+    <text x="520" y="360" fill="#17201c">gate</text>
+    <rect x="685" y="210" width="140" height="110" rx="8" fill="#e5f3f1" stroke="#2f6f73" stroke-width="3"/>
+    <text x="723" y="253" fill="#134e4a">U-Net</text>
+    <text x="714" y="285" fill="#17201c" font-family="Consolas, Cascadia Code, monospace" font-size="17">loss -></text>
+    <text x="706" y="310" fill="#17201c" font-family="Consolas, Cascadia Code, monospace" font-size="17">weights</text>
+    <text x="714" y="360" fill="#17201c">training</text>
+    <rect x="885" y="210" width="140" height="110" rx="8" fill="#ece9fb" stroke="#6956b5" stroke-width="3"/>
+    <path d="M909 286 C937 225,977 294,1015 226" stroke="#78d28a" stroke-width="14" fill="none"/>
+    <text x="916" y="360" fill="#17201c">prediction</text>
+  </g>
+  <g stroke="#2f6f73" stroke-width="5" fill="none">
+    <path d="M225 265 H282"/><path d="M425 265 H482"/><path d="M625 265 H682"/><path d="M825 265 H882"/>
+  </g>
+  <g fill="#2f6f73">
+    <path d="M282 265 l-14-8 5 8-5 8z"/><path d="M482 265 l-14-8 5 8-5 8z"/><path d="M682 265 l-14-8 5 8-5 8z"/><path d="M882 265 l-14-8 5 8-5 8z"/>
+  </g>
+  <path d="M955 384 C860 495,392 505,355 381" stroke="#6956b5" stroke-width="5" fill="none"/>
+  <path d="M355 381 l-3 16 12-8 2 14z" fill="#6956b5"/>
+  <text x="468" y="494" fill="#4c3d8f" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">review failures -> correct masks -> retrain with better evidence</text>
+  <rect x="164" y="430" width="255" height="72" rx="8" fill="#111827"/>
+  <text x="187" y="462" fill="#d3e6dd" font-family="Consolas, Cascadia Code, monospace" font-size="17">train/images/a.png</text>
+  <text x="187" y="488" fill="#d3e6dd" font-family="Consolas, Cascadia Code, monospace" font-size="17">train/masks/a.png</text>
+  <rect x="770" y="430" width="255" height="72" rx="8" fill="#111827"/>
+  <text x="793" y="462" fill="#d3e6dd" font-family="Consolas, Cascadia Code, monospace" font-size="17">model.pth</text>
+  <text x="793" y="488" fill="#d3e6dd" font-family="Consolas, Cascadia Code, monospace" font-size="17">report.html + metrics</text>
+</svg>
