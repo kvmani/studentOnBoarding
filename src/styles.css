@@ -14,6 +14,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 button,
@@ -227,6 +228,7 @@ button {
     linear-gradient(135deg, rgba(15, 47, 47, 0.98), rgba(22, 78, 99, 0.96) 48%, rgba(74, 47, 7, 0.9)),
     #10231f;
   box-shadow: 0 24px 70px rgba(16, 35, 31, 0.22);
+  animation: dashboard-rise 520ms ease both;
 }
 
 .eyebrow {
@@ -296,11 +298,269 @@ h1 {
   gap: 12px;
 }
 
-.hero-media img {
-  display: block;
-  width: 100%;
+.lab-workflow-visual {
+  position: relative;
+  display: grid;
+  gap: 16px;
+  min-height: 360px;
+  overflow: hidden;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 8px;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.22);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(153, 246, 228, 0.16), transparent 29%),
+    linear-gradient(145deg, rgba(15, 28, 26, 0.94), rgba(17, 24, 39, 0.86));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 20px 45px rgba(0, 0, 0, 0.22);
+}
+
+.lab-workflow-visual::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border-radius: 8px;
+  background-image:
+    linear-gradient(rgba(216, 239, 233, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(216, 239, 233, 0.06) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75), transparent);
+}
+
+.workflow-scene-top,
+.workflow-scene-bottom {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 14px;
+}
+
+.workflow-scene-top {
+  grid-template-columns: minmax(0, 1.1fr) minmax(190px, 0.78fr);
+  align-items: start;
+}
+
+.workflow-scene-bottom {
+  grid-template-columns: minmax(0, 1fr) minmax(178px, 0.72fr);
+  align-items: end;
+}
+
+.mini-window,
+.gpu-card,
+.sample-card {
+  border: 1px solid rgba(216, 239, 233, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
+}
+
+.mini-window {
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.editor-window {
+  min-height: 180px;
+  animation: workflow-float 5.8s ease-in-out infinite;
+}
+
+.terminal-window {
+  margin-top: 28px;
+  animation: workflow-float 6.6s ease-in-out 900ms infinite;
+}
+
+.window-bar {
+  display: flex;
+  gap: 6px;
+  padding: 10px;
+  border-bottom: 1px solid rgba(216, 239, 233, 0.11);
+  background: rgba(15, 28, 26, 0.68);
+}
+
+.window-bar span {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #d8efe9;
+  opacity: 0.58;
+}
+
+.editor-body,
+.terminal-body {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.file-rail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: #d8efe9;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.file-rail span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-rail svg,
+.terminal-body strong,
+.gpu-card svg {
+  color: #f9d56e;
+}
+
+.code-lines {
+  display: grid;
+  gap: 8px;
+}
+
+.code-lines i {
+  display: block;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #99f6e4, rgba(153, 246, 228, 0.16));
+  transform-origin: left;
+  animation: code-pulse 3.8s ease-in-out infinite;
+}
+
+.code-lines i:nth-child(2) {
+  width: 74%;
+  animation-delay: 300ms;
+}
+
+.code-lines i:nth-child(3) {
+  width: 48%;
+  background: linear-gradient(90deg, #f9d56e, rgba(249, 213, 110, 0.14));
+  animation-delay: 650ms;
+}
+
+.code-lines i:nth-child(4) {
+  width: 82%;
+  animation-delay: 950ms;
+}
+
+.terminal-body {
+  color: #d8efe9;
+  font-family: "Cascadia Code", Consolas, ui-monospace, monospace;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.terminal-body span,
+.terminal-body strong {
+  overflow-wrap: anywhere;
+}
+
+.workflow-connector {
+  position: relative;
+  z-index: 1;
+  height: 26px;
+  overflow: hidden;
+}
+
+.workflow-connector::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  right: 14%;
+  left: 10%;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(216, 239, 233, 0.18);
+}
+
+.workflow-connector span {
+  position: absolute;
+  top: 8px;
+  left: 10%;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #5eead4;
+  box-shadow: 0 0 20px rgba(94, 234, 212, 0.8);
+  animation: connector-travel 3.6s ease-in-out infinite;
+}
+
+.sample-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.sample-card {
+  position: relative;
+  display: grid;
+  min-height: 112px;
+  align-content: end;
+  gap: 8px;
+  padding: 12px;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.sample-card::before {
+  content: "";
+  position: absolute;
+  inset: 12px 12px 42px;
+  border-radius: 6px;
+  background:
+    linear-gradient(135deg, rgba(216, 239, 233, 0.18), rgba(94, 234, 212, 0.04)),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.08) 0 5px, transparent 5px 13px);
+}
+
+.mask-sample::before {
+  background:
+    radial-gradient(circle at 36% 45%, rgba(249, 213, 110, 0.9) 0 14px, transparent 15px),
+    radial-gradient(circle at 68% 34%, rgba(94, 234, 212, 0.8) 0 10px, transparent 11px),
+    rgba(216, 239, 233, 0.1);
+  animation: mask-reveal 4.4s ease-in-out infinite;
+}
+
+.sample-card svg,
+.sample-card span {
+  position: relative;
+  z-index: 1;
+}
+
+.sample-card span {
+  color: #d8efe9;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.gpu-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 92px;
+  padding: 14px;
+  color: #ffffff;
+  background:
+    linear-gradient(135deg, rgba(15, 118, 110, 0.42), rgba(255, 255, 255, 0.08)),
+    rgba(255, 255, 255, 0.08);
+  animation: gpu-ready 4.8s ease-in-out infinite;
+}
+
+.gpu-card div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.gpu-card strong,
+.gpu-card span {
+  overflow-wrap: anywhere;
+}
+
+.gpu-card span {
+  color: #d8efe9;
+  font-size: 0.84rem;
 }
 
 .stat-strip {
@@ -330,13 +590,16 @@ h1 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   margin: 18px 0;
+  animation: dashboard-rise 520ms ease 80ms both;
 }
 
 .workflow-strip div {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
   min-height: 58px;
+  overflow: hidden;
   padding: 14px;
   border: 1px solid #d8e2de;
   border-radius: 8px;
@@ -344,6 +607,32 @@ h1 {
   background: #ffffff;
   box-shadow: 0 10px 24px rgba(23, 32, 28, 0.06);
   font-weight: 800;
+}
+
+.workflow-strip div::after {
+  content: "";
+  position: absolute;
+  inset: auto 14px 9px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0f766e, #f9d56e);
+  transform: scaleX(0.26);
+  transform-origin: left;
+  opacity: 0.72;
+  transition: transform 180ms ease;
+}
+
+.workflow-strip div:hover::after {
+  transform: scaleX(1);
+}
+
+.workflow-strip svg {
+  flex: 0 0 auto;
+}
+
+.workflow-strip span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .category-row {
@@ -397,6 +686,7 @@ h1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
   gap: 16px;
+  animation: dashboard-rise 520ms ease 140ms both;
 }
 
 .lesson-card {
@@ -410,7 +700,8 @@ h1 {
   transition:
     transform 160ms ease,
     border-color 160ms ease,
-    box-shadow 160ms ease;
+    box-shadow 160ms ease,
+    background 160ms ease;
 }
 
 .lesson-card::before {
@@ -437,6 +728,12 @@ h1 {
   border-color: #0f766e;
   box-shadow: 0 18px 36px rgba(23, 32, 28, 0.12);
   transform: translateY(-1px);
+}
+
+.lesson-card:hover {
+  background:
+    linear-gradient(180deg, rgba(236, 254, 255, 0.58), rgba(255, 255, 255, 1) 38%),
+    #ffffff;
 }
 
 .card-icon {
@@ -487,6 +784,7 @@ h1 {
 .lesson-page {
   display: grid;
   gap: 18px;
+  min-width: 0;
 }
 
 .back-button {
@@ -533,7 +831,8 @@ h1 {
 
 .lesson-visual {
   display: block;
-  width: 100%;
+  width: min(100%, 570px);
+  justify-self: center;
   min-height: 240px;
   border-radius: 8px;
 }
@@ -574,6 +873,9 @@ h1 {
 }
 
 .lesson-section {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
   padding: 24px;
   border: 1px solid #d8e2de;
   border-radius: 8px;
@@ -644,6 +946,8 @@ pre {
   padding: 16px;
   color: #d3e6dd;
   background: transparent;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 code {
@@ -675,11 +979,14 @@ code {
   background: #eef7f4;
   font-family: "Cascadia Code", Consolas, ui-monospace, monospace;
   overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .tutorial-figure {
+  position: relative;
   width: min(100%, 900px);
   margin: 16px auto 18px;
+  overflow: hidden;
 }
 
 .tutorial-figure img {
@@ -716,6 +1023,42 @@ code {
   line-height: 1.5;
 }
 
+.paired-domain-figure {
+  overflow: visible;
+}
+
+.paired-domain-figure img {
+  background: #0b2a3a;
+}
+
+.domain-labels {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  right: 14px;
+  left: 14px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  pointer-events: none;
+}
+
+.domain-labels span {
+  justify-self: start;
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  color: #ffffff;
+  background: rgba(15, 35, 31, 0.78);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+  font-size: 0.84rem;
+  font-weight: 900;
+}
+
+.domain-labels span + span {
+  justify-self: end;
+}
+
 .link-row,
 .next-row {
   display: flex;
@@ -740,6 +1083,79 @@ code {
   text-decoration: none;
 }
 
+@keyframes dashboard-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes workflow-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes code-pulse {
+  0%,
+  100% {
+    opacity: 0.42;
+    transform: scaleX(0.7);
+  }
+
+  45%,
+  70% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes connector-travel {
+  0% {
+    transform: translateX(0);
+  }
+
+  55%,
+  100% {
+    transform: translateX(470px);
+  }
+}
+
+@keyframes mask-reveal {
+  0%,
+  100% {
+    clip-path: inset(0 48% 0 0);
+  }
+
+  45%,
+  70% {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes gpu-ready {
+  0%,
+  100% {
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
+  }
+
+  50% {
+    box-shadow:
+      0 16px 34px rgba(0, 0, 0, 0.18),
+      0 0 0 3px rgba(94, 234, 212, 0.14);
+  }
+}
+
 @media (max-width: 1040px) {
   .layout {
     grid-template-columns: 1fr;
@@ -747,7 +1163,12 @@ code {
 
   .sidebar {
     position: static;
+    grid-row: 2;
     max-height: none;
+  }
+
+  .content-panel {
+    grid-row: 1;
   }
 
   .lesson-nav {
@@ -762,6 +1183,10 @@ code {
 
   .workflow-strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lab-workflow-visual {
+    min-height: 330px;
   }
 }
 
@@ -787,6 +1212,25 @@ code {
     grid-template-columns: 1fr;
   }
 
+  .workflow-scene-top,
+  .workflow-scene-bottom,
+  .sample-pair {
+    grid-template-columns: 1fr;
+  }
+
+  .lab-workflow-visual {
+    min-height: auto;
+    padding: 14px;
+  }
+
+  .terminal-window {
+    margin-top: 0;
+  }
+
+  .workflow-connector {
+    display: none;
+  }
+
   .lesson-nav {
     grid-template-columns: 1fr;
   }
@@ -796,6 +1240,7 @@ code {
   }
 
   .lesson-visual {
+    width: 100%;
     min-height: 180px;
   }
 
@@ -803,5 +1248,16 @@ code {
   .lesson-hero h1 {
     font-size: 2.1rem;
     line-height: 1.08;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
   }
 }

@@ -5,10 +5,13 @@ import {
   Clock3,
   Command,
   Copy,
+  Cpu,
   ExternalLink,
   FileSearch,
+  FolderOpen,
   Gauge,
   Home,
+  Image,
   Layers3,
   Monitor,
   Network,
@@ -157,7 +160,7 @@ function Dashboard({ lessons: visibleLessons, onOpen, query }: { lessons: Lesson
           </div>
         </div>
         <div className="hero-media">
-          <img src="tutorial-assets/onboarding-hero.svg" alt="Lab onboarding workflow illustration" />
+          <LabWorkflowVisual />
           <div className="stat-strip">
             <span>
               <strong>{lessons.length}</strong>
@@ -178,19 +181,19 @@ function Dashboard({ lessons: visibleLessons, onOpen, query }: { lessons: Lesson
       <section className="workflow-strip" aria-label="Recommended starting workflow">
         <div>
           <Command size={19} />
-          Open folder
+          <span>Open folder</span>
         </div>
         <div>
           <TerminalSquare size={19} />
-          Activate .venv
+          <span>Activate .venv</span>
         </div>
         <div>
           <FileSearch size={19} />
-          Check data
+          <span>Check data</span>
         </div>
         <div>
           <Server size={19} />
-          Submit GPU job
+          <span>Submit GPU job</span>
         </div>
       </section>
 
@@ -232,6 +235,71 @@ function Dashboard({ lessons: visibleLessons, onOpen, query }: { lessons: Lesson
         </div>
       )}
     </>
+  );
+}
+
+function LabWorkflowVisual() {
+  return (
+    <div className="lab-workflow-visual" aria-label="Animated lab workflow preview" role="img">
+      <div className="workflow-scene-top">
+        <div className="mini-window editor-window">
+          <div className="window-bar">
+            <span />
+            <span />
+            <span />
+          </div>
+          <div className="editor-body">
+            <div className="file-rail">
+              <FolderOpen size={17} />
+              <span>HydrideSegmentation</span>
+            </div>
+            <div className="code-lines" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+              <i />
+            </div>
+          </div>
+        </div>
+
+        <div className="mini-window terminal-window">
+          <div className="window-bar">
+            <span />
+            <span />
+            <span />
+          </div>
+          <div className="terminal-body">
+            <span>&gt; .\.venv\Scripts\activate</span>
+            <span>&gt; python train.py</span>
+            <strong>run_042 ready</strong>
+          </div>
+        </div>
+      </div>
+
+      <div className="workflow-connector" aria-hidden="true">
+        <span />
+      </div>
+
+      <div className="workflow-scene-bottom">
+        <div className="sample-pair">
+          <div className="sample-card optical-sample">
+            <Image size={18} />
+            <span>image</span>
+          </div>
+          <div className="sample-card mask-sample">
+            <Layers3 size={18} />
+            <span>mask</span>
+          </div>
+        </div>
+        <div className="gpu-card">
+          <Cpu size={20} />
+          <div>
+            <strong>GPU job</strong>
+            <span>logs + checkpoints</span>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -360,7 +428,13 @@ function BlockRenderer({ block }: { block: LessonBlock }) {
       return <div className="equation">{block.text}</div>;
     case "image":
       return (
-        <figure className={`tutorial-figure ${block.size ? `figure-${block.size}` : ""}`}>
+        <figure className={`tutorial-figure ${block.size ? `figure-${block.size}` : ""} ${figureClass(block.src)}`}>
+          {block.src.includes("powder-paired-example.png") ? (
+            <div className="domain-labels" aria-hidden="true">
+              <span>Domain A</span>
+              <span>Domain B</span>
+            </div>
+          ) : null}
           <img src={block.src} alt={block.alt} />
           <figcaption>{block.caption}</figcaption>
         </figure>
@@ -368,6 +442,13 @@ function BlockRenderer({ block }: { block: LessonBlock }) {
     default:
       return null;
   }
+}
+
+function figureClass(src: string) {
+  if (src.includes("powder-paired-example.png")) {
+    return "paired-domain-figure";
+  }
+  return "";
 }
 
 function CodeBlock({ language, code }: { language: string; code: string }) {

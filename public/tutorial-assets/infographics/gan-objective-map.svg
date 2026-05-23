@@ -3,8 +3,8 @@
   <desc id="desc">Infographic showing generators, discriminators, reconstruction losses, adversarial losses, and cycle consistency for image translation.</desc>
   <rect width="1200" height="680" fill="#f8faf9"/>
   <rect x="40" y="42" width="1120" height="596" rx="8" fill="#ffffff" stroke="#d8e2de" stroke-width="3"/>
-  <text x="70" y="94" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700">Image-to-image translation: make useful images, then prove they look real</text>
-  <text x="70" y="132" fill="#587069" font-family="Segoe UI, Arial, sans-serif" font-size="20">pix2pix learns from aligned pairs. CycleGAN learns from two unpaired image folders using cycle consistency.</text>
+  <text x="70" y="88" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Image-to-image translation: useful outputs with checks</text>
+  <text x="70" y="128" fill="#587069" font-family="Segoe UI, Arial, sans-serif" font-size="19">pix2pix learns from aligned pairs. CycleGAN learns from two unpaired folders using cycle consistency.</text>
 
   <g transform="translate(70 175)">
     <rect width="500" height="390" rx="8" fill="#e5f3f1" stroke="#2f6f73" stroke-width="3"/>
@@ -27,7 +27,10 @@
     <text x="315" y="331" fill="#587069" font-family="Segoe UI, Arial, sans-serif" font-size="14">real or fake?</text>
     <path d="M232 312 H279" stroke="#6956b5" stroke-width="4"/><path d="M279 312 l-13-8 4 8-4 8z" fill="#6956b5"/>
     <path d="M427 205 V270" stroke="#6956b5" stroke-width="4"/><path d="M427 270 l-8-13 8 4 8-4z" fill="#6956b5"/>
-    <text x="27" y="372" fill="#134e4a" font-family="Consolas, Cascadia Code, monospace" font-size="17">loss_G = GAN(fake B looks real) + lambda * L1(fake B, real B)</text>
+    <text x="27" y="366" fill="#134e4a" font-family="Consolas, Cascadia Code, monospace" font-size="15">
+      <tspan x="27" dy="0">loss_G = GAN(fake B looks real)</tspan>
+      <tspan x="27" dy="19">       + lambda * L1(fake B, real B)</tspan>
+    </text>
   </g>
 
   <g transform="translate(630 175)">
@@ -53,6 +56,9 @@
     <text x="213" y="315" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">D_B</text>
     <rect x="350" y="280" width="110" height="55" rx="8" fill="#ffffff" stroke="#6956b5" stroke-width="3"/>
     <text x="370" y="315" fill="#17201c" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">cycle</text>
-    <text x="26" y="372" fill="#7f3217" font-family="Consolas, Cascadia Code, monospace" font-size="17">A -> fake B -> A' and B -> fake A -> B' should reconstruct the start.</text>
+    <text x="26" y="366" fill="#7f3217" font-family="Consolas, Cascadia Code, monospace" font-size="15">
+      <tspan x="26" dy="0">A -> fake B -> A' and B -> fake A -> B'</tspan>
+      <tspan x="26" dy="19">should reconstruct the start.</tspan>
+    </text>
   </g>
 </svg>

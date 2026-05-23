@@ -1115,12 +1115,6 @@ export const lessons: Lesson[] = [
             caption: "Local paired training examples often place input and target information into one sample file or a strict paired folder contract."
           },
           {
-            type: "image",
-            src: "tutorial-assets/examples/ebsd-cleaned-map.png",
-            alt: "Cleaned EBSD map example from local image-to-image workflow assets.",
-            caption: "Image-to-image workflows can learn restoration, cleanup, contrast transfer, or modality translation when the dataset is prepared consistently."
-          },
-          {
             type: "code",
             language: "text",
             code: "pix2pix aligned dataset used by the PyTorch repo:\n  datasets/my_paired_dataset/\n    train/*.png   # each image usually stores A and B side-by-side\n    val/*.png\n    test/*.png\n\nCycleGAN unaligned dataset:\n  datasets/my_unpaired_dataset/\n    trainA/*.png  # source domain A\n    trainB/*.png  # target domain B\n    testA/*.png\n    testB/*.png\n\nPowder TensorFlow pix2pix local example:\n  data/powder/\n    train/*.png\n    val/*.png\n    test/*.png\n  # provided examples are 256x512 PNGs: 256 px input + 256 px target"
